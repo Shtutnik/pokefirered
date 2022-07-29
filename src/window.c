@@ -322,6 +322,8 @@ void BlitBitmapRectToWindow(u8 windowId, const u8 *pixels, u16 srcX, u16 srcY, u
 {
     struct Bitmap sourceRect;
     struct Bitmap destRect;
+	
+	destX -= rectWidth;
 
     sourceRect.pixels = (u8*)pixels;
     sourceRect.width = srcWidth;
