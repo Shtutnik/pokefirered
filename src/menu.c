@@ -193,7 +193,7 @@ void TopBarWindowPrintString(const u8 *string, u8 unused, bool8 copyToVram)
         PutWindowTilemap(sTopBarWindowId);
         FillWindowPixelBuffer(sTopBarWindowId, PIXEL_FILL(15));
         width = GetStringWidth(0, string, 0);
-        AddTextPrinterParameterized3(sTopBarWindowId, 0, -20 - width, 1, gUnknown_8456618, 0, string);
+        AddTextPrinterParameterized3(sTopBarWindowId, 1, -20 - width, 1, gUnknown_8456618, 0, string);
         if (copyToVram)
             CopyWindowToVram(sTopBarWindowId, COPYWIN_BOTH);
     }
@@ -224,7 +224,7 @@ void TopBarWindowPrintTwoStrings(const u8 *string, const u8 *string2, bool8 fgCo
         if (string2)
         {
             width = GetStringWidth(0, string2, 0);
-            AddTextPrinterParameterized3(sTopBarWindowId, 0, -20 - width, 1, color, 0, string2);
+            AddTextPrinterParameterized3(sTopBarWindowId, 1, -20 - width, 1, color, 0, string2);
         }
         AddTextPrinterParameterized4(sTopBarWindowId, 1, 4, 1, 0, 0, color, 0, string);
         if (copyToVram)
