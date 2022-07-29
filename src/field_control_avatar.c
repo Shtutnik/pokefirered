@@ -30,6 +30,9 @@
 #include "constants/event_objects.h"
 #include "constants/maps.h"
 #include "constants/metatile_behaviors.h"
+#include "mgba.h"
+#include "debug.h"
+
 
 #define SIGNPOST_POKECENTER 0
 #define SIGNPOST_POKEMART 1
@@ -153,6 +156,12 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
         else if (heldKeys & DPAD_RIGHT)
             input->dpadDirection = DIR_EAST;
     }
+	
+	if ((heldKeys & R_BUTTON) && input->pressedStartButton)
+	{
+		input->input_field_1_2 = TRUE;
+		input->pressedStartButton = FALSE;
+	}
 }
 
 static void QuestLogOverrideJoyVars(struct FieldInput *input, u16 *newKeys, u16 *heldKeys)
@@ -294,6 +303,14 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
         gInputToStoreInQuestLogMaybe.pressedSelectButton = TRUE;
         return TRUE;
     }
+	
+	if (input->input_field_1_2)
+	{
+		MgbaPrintf(MGBA_LOG_INFO, "HERE!!");
+		PlaySE(SE_WIN_OPEN);
+		Debug_ShowMainMenu();
+		return TRUE;
+	}
 
     return FALSE;
 }
