@@ -1,17 +1,17 @@
 Text_BootedUpPC::
-	.string "{PLAYER} booted up the PC.$"
+	.string "המחשב נדלק.$"
 
 Text_AccessWhichPC::
-	.string "Which PC should be accessed?$"
+	.string "לאיזה מחשב להתחבר?$"
 
 Text_AccessedSomeonesPC::
-	.string "Accessed Someone's PC.$"
+	.string "נכנס למחשב של מישהו אחר.$"
 
 Text_OpenedPkmnStorage::
-	.string "POKéMON Storage System opened.$"
+	.string "מערכת אחסון פוקימונים נפתחה.$"
 
 Text_AccessedPlayersPC::
-	.string "Accessed {PLAYER}'s PC.$"
+	.string "נכנס למחשב של {PLAYER}.$"
 
 Text_AccessedBillsPC::
-	.string "Accessed BILL's PC.$"
+	.string "נכנס למחשב של ביל.$"

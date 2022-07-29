@@ -1,5 +1,5 @@
 gOtherText_NewName::
-    .string "NEW NAME$"
+    .string "אחר$"
 
 gNameChoice_Green::
     .string "גרין$"
@@ -155,16 +155,16 @@ gNewGame_HelpDocs7::
     .string "לחצו על כפתור L או R.$"
 
 gOakText_AskPlayerGender::
-    .string "Now tell me. Are you a boy?\n"
-    .string "Or are you a girl?$"
+    .string "אמרו לי, אתם אתם בן?\n"
+    .string "או האם אתם בת?$"
 
 gNewGameAdventureIntro1::
-    .string "בעולם בו אתם עומדים להיכנס,\n"
+    .string "בעולם שאתם עומדים להיכנס אליו,\n"
     .string "תצאו להרפתקה גדולה\n"
-    .string "בה אתם הגיבורים.\n"
+    .string "שבה אתם הגיבורים.\n"
     .string "\n"
-    .string "תדברו עם אנשים ותבדקו חפצים\n"
-    .string "בכל מקום אליו תגיעו, אם זה בערים, דרכים,\n"
+    .string "תדברו עם אנשים ותבדקו חפצים בכל מקום\n"
+    .string "אליו תגיעו, אם זה בערים, דרכים,\n"
     .string "או מערות. תאספו מידע ורמזים\n"
     .string "מכל מקור.$"
 
@@ -188,7 +188,7 @@ gNewGameAdventureIntro3::
 
 gOakText_WelcomeToTheWorld::
     .string "שלום לך!\n"
-    .string "נעים מאוד להכיר!\pברוכים הבאים לעולם של פוקימונים!\pשמי אלון.\pלעיתים אנשים מכנים אותי\n"
+    .string "נעים מאוד להכיר!\pברוכים הבאים לעולם של הפוקימונים!\pשמי אלון.\pלעיתים אנשים מכנים אותי\n"
     .string "הפרופסור של הפוקימונים.\p$"
 
 gOakText_WorldInhabited1::
@@ -199,8 +199,8 @@ gOakText_WorldInhabited2::
     .string "יצורים הנקראים פוקימונים.\p$"
 
 gOakText_PetsBattlingStudy::
-    .string "עבור חלק מהאנשים, פוקימונים הם חיות מחמד.\n"
-    .string "אחרים משתמשים בהם לקרבות.\pומה לגבי…\pובכן אני חוקר פוקימונים כמקצוע.\p$"
+    .string "עבור חלק מהאנשים, פוקימונים הם\n"
+    .string "חיות מחמד. ואחרים משתמשים בהם לקרבות.\pומה לגביי?\pובכן אני חוקר פוקימונים כמקצוע.\p$"
 
 gOakText_TellMeALittleAboutYourself::
     .string "אבל ראשית, ספרו לי קצת\n"
@@ -229,6 +229,6 @@ gOakText_RememberRivalName::
     .string "שמו הוא {RIVAL}!\p$"
 
 gOakText_LegendAboutToUnfold::
-    .string "{PLAYER}!\אגדת הפוקימונים שלך ממש\n"
+    .string "{PLAYER}!\pאגדת הפוקימונים שלך ממש\n"
     .string "עומדת להיפתח!\pעולם של חלומות והרפתקאות\n"
     .string "עם פוקימונים מחכה! בואו נתחיל!$"
