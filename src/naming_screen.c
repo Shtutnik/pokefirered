@@ -37,6 +37,7 @@
 enum
 {
     KBPAGE_LETTERS_LOWER,
+	KBPAGE_LETTERS_HEBREW,
     KBPAGE_LETTERS_UPPER,
     KBPAGE_SYMBOLS,
     KBPAGE_COUNT,
@@ -321,6 +322,12 @@ static const u8 gUnknown_83E22D0[][4][8] = {
         __("mnopqrs"),
         __("tuvwxyz"),
     },
+	[KBPAGE_LETTERS_HEBREW] = {
+        __("אבדגהו ."),
+        __("זחטיכל ,"),
+        __("מנסעפצקר"),
+        __("שתןםךף  "),
+    },
     [KBPAGE_LETTERS_UPPER] = {
         __("ABCDEF ."),
         __("GHIJKL ,"),
@@ -338,6 +345,7 @@ static const u8 gUnknown_83E22D0[][4][8] = {
 static const u8 gUnknown_83E2330[] = {
     [KBPAGE_LETTERS_LOWER] = 8, // lower
     [KBPAGE_LETTERS_UPPER] = 8, // upper
+	[KBPAGE_LETTERS_HEBREW]= 8, // hebrew
     [KBPAGE_SYMBOLS]       = 6
 };
 
@@ -352,6 +360,16 @@ static const u8 gUnknown_83E2333[][8] = {
          92,
         123
     },
+	[KBPAGE_LETTERS_HEBREW] = {
+		0,
+		12,
+		24,
+		56,
+		68,
+		80,
+		92,
+		123
+	},
     [KBPAGE_LETTERS_UPPER] = {
          0,
          12,
@@ -564,17 +582,20 @@ static void sub_809DD88(u8 taskId)
 static const u8 sPageOrderLowerFirst[] = {
     KBPAGE_LETTERS_LOWER,
     KBPAGE_SYMBOLS,
-    KBPAGE_LETTERS_UPPER
+    KBPAGE_LETTERS_UPPER,
+	KBPAGE_LETTERS_HEBREW
 };
 
 static const u8 sPageOrderUpperFirst[] = {
-    KBPAGE_LETTERS_UPPER,
+    KBPAGE_LETTERS_HEBREW,
+	KBPAGE_LETTERS_UPPER,
     KBPAGE_LETTERS_LOWER,
     KBPAGE_SYMBOLS
 };
 
 static const u8 sPageOrderSymbolsFirst[] = {
     KBPAGE_SYMBOLS,
+	KBPAGE_LETTERS_HEBREW,
     KBPAGE_LETTERS_UPPER,
     KBPAGE_LETTERS_LOWER
 };
@@ -597,11 +618,11 @@ static u8 sub_809DE50(void)
 static bool8 MainState_BeginFadeIn(void)
 {
     DecompressToBgTilemapBuffer(3, gUnknown_8E982BC);
-    sNamingScreenData->currentPage = KBPAGE_LETTERS_UPPER;
+    sNamingScreenData->currentPage = KBPAGE_LETTERS_HEBREW;
     DecompressToBgTilemapBuffer(2, gUnknown_8E98458);
     DecompressToBgTilemapBuffer(1, gUnknown_8E98398);
     sub_809F9E8(sNamingScreenData->windows[1], KBPAGE_LETTERS_LOWER);
-    sub_809F9E8(sNamingScreenData->windows[0], KBPAGE_LETTERS_UPPER);
+    sub_809F9E8(sNamingScreenData->windows[0], KBPAGE_LETTERS_HEBREW);
     PrintBufferCharactersOnScreen();
     PrintTitle();
     sub_809FAE4();
@@ -1822,12 +1843,14 @@ static const struct TextColor sTextColorStruct = {
 
 static const u8 sFillValues[KBPAGE_COUNT] = {
     [KBPAGE_LETTERS_LOWER] = PIXEL_FILL(14),
+	[KBPAGE_LETTERS_HEBREW] = PIXEL_FILL(13),
     [KBPAGE_LETTERS_UPPER] = PIXEL_FILL(13),
     [KBPAGE_SYMBOLS]       = PIXEL_FILL(15)
 };
 
 static const u8 *const sKeyboardTextColors[KBPAGE_COUNT] = {
     [KBPAGE_LETTERS_LOWER] = sTextColorStruct.colors[1],
+	[KBPAGE_LETTERS_HEBREW] = sTextColorStruct.colors[0],
     [KBPAGE_LETTERS_UPPER] = sTextColorStruct.colors[0],
     [KBPAGE_SYMBOLS]       = sTextColorStruct.colors[2]
 };
@@ -1979,7 +2002,7 @@ static const struct NamingScreenTemplate sPlayerNamingScreenTemplate = {
     .maxChars = PLAYER_NAME_LENGTH,
     .iconFunction = 1,
     .addGenderIcon = 0,
-    .initialPage = KBPAGE_LETTERS_UPPER,
+    .initialPage = KBPAGE_LETTERS_HEBREW,
     .title = gText_YourName,
 };
 
@@ -1988,7 +2011,7 @@ static const struct NamingScreenTemplate sPcBoxNamingScreenTemplate = {
     .maxChars = BOX_NAME_LENGTH,
     .iconFunction = 2,
     .addGenderIcon = 0,
-    .initialPage = KBPAGE_LETTERS_UPPER,
+    .initialPage = KBPAGE_LETTERS_HEBREW,
     .title = gText_BoxName,
 };
 
@@ -1997,7 +2020,7 @@ static const struct NamingScreenTemplate sMonNamingScreenTemplate = {
     .maxChars = POKEMON_NAME_LENGTH,
     .iconFunction = 3,
     .addGenderIcon = 1,
-    .initialPage = KBPAGE_LETTERS_UPPER,
+    .initialPage = KBPAGE_LETTERS_HEBREW,
     .title = gText_PkmnsNickname,
 };
 
@@ -2006,7 +2029,7 @@ static const struct NamingScreenTemplate sRivalNamingScreenTemplate = {
     .maxChars = PLAYER_NAME_LENGTH,
     .iconFunction = 4,
     .addGenderIcon = 0,
-    .initialPage = KBPAGE_LETTERS_UPPER,
+    .initialPage = KBPAGE_LETTERS_HEBREW,
     .title = gText_RivalsName,
 };
 
@@ -2356,6 +2379,12 @@ static const u8 *const sNamingScreenKeyboardText[KBPAGE_COUNT][KBROW_COUNT] = {
         gText_NamingScreenKeyboard_mnopqrs,
         gText_NamingScreenKeyboard_tuvwxyz
     },
+	[KBPAGE_LETTERS_HEBREW] = {
+        gText_NamingScreenKeyboard_Row1,
+        gText_NamingScreenKeyboard_Row2,
+        gText_NamingScreenKeyboard_Row3,
+        gText_NamingScreenKeyboard_Row4
+	},
     [KBPAGE_LETTERS_UPPER] = {
         gText_NamingScreenKeyboard_ABCDEF,
         gText_NamingScreenKeyboard_GHIJKL,
