@@ -125,41 +125,41 @@ gNameChoice_Suzi::
     .string "SUZI$"
 
 gNewGame_HelpDocs1::
-    .string "The various buttons will be explained in\n"
-    .string "the order of their importance.$"
+    .string "להלן הסבר קצר על הכפתורים\n"
+    .string "לפי סדר החשיבות שלהם.$"
 
 gNewGame_HelpDocs2::
-    .string "Moves the main character.\n"
-    .string "Also used to choose various data\n"
-    .string "headings.$"
+    .string "להזיז את הדמות.\n"
+    .string "לבחור פריטים שונים\n"
+    .string "בתפריטים.$"
 
 gNewGame_HelpDocs3::
-    .string "Used to confirm a choice, check\n"
-    .string "things, chat, and scroll text.$"
+    .string "משמש לבחירה, לבדוק\n"
+    .string "דברים, לשוחח, ולזרז טקסט.$"
 
 gNewGame_HelpDocs4::
-    .string "Used to exit, cancel a choice,\n"
-    .string "and cancel a mode.$"
+    .string "משמש ליציאה, ביטול בחירה,\n"
+    .string "או ביטול מצב.$"
 
 gNewGame_HelpDocs5::
-    .string "Press this button to open the\n"
-    .string "MENU.$"
+    .string "לחצו על מקש זה כדי לפתוח\n"
+    .string "את התפריט.$"
 
 gNewGame_HelpDocs6::
-    .string "Used to shift items and to use\n"
-    .string "a registered item.$"
+    .string "משמש להזזת פריטים או לשימוש\n"
+    .string "בפריט שנבחר קודם לכן.$"
 
 gNewGame_HelpDocs7::
-    .string "If you need help playing the\n"
-    .string "game, or on how to do things,\n"
-    .string "press the L or R Button.$"
+    .string "אם תצטרכו עזרה באיך\n"
+    .string "לשחק, או כיצד לעשות דברים,\n"
+    .string "לחצו על כפתור L או R.$"
 
 gOakText_AskPlayerGender::
     .string "Now tell me. Are you a boy?\n"
     .string "Or are you a girl?$"
 
 gNewGameAdventureIntro1::
-    .string "In the world which you are about to\n"
+    .string "בעולם שאתם עומדים להיכנס אליו\n"
     .string "enter, you will embark on a grand\n"
     .string "adventure with you as the hero.\n"
     .string "\n"
