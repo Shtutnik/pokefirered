@@ -448,7 +448,7 @@ void TextPrinterDrawDownArrow(struct TextPrinter *textPrinter)
             FillWindowPixelRect(
                 textPrinter->printerTemplate.windowId,
                 textPrinter->printerTemplate.bgColor << 4 | textPrinter->printerTemplate.bgColor,
-                textPrinter->printerTemplate.currentX,
+                textPrinter->printerTemplate.currentX-10,
                 textPrinter->printerTemplate.currentY,
                 10,
                 12);
@@ -724,7 +724,7 @@ u16 RenderText(struct TextPrinter *textPrinter)
                 if (width > 0)
                 {
                     ClearTextSpan(textPrinter, width);
-                    textPrinter->printerTemplate.currentX += width;
+                    textPrinter->printerTemplate.currentX -= width;
                     return 0;
                 }
                 return 2;
@@ -741,7 +741,7 @@ u16 RenderText(struct TextPrinter *textPrinter)
                     if (width > 0)
                     {
                         ClearTextSpan(textPrinter, width);
-                        textPrinter->printerTemplate.currentX += width;
+                        textPrinter->printerTemplate.currentX -= width;
                         return 0;
                     }
                 }
@@ -772,7 +772,7 @@ u16 RenderText(struct TextPrinter *textPrinter)
         case CHAR_KEYPAD_ICON:
             currChar = *textPrinter->printerTemplate.currentChar++;
             gGlyphInfo.width = DrawKeypadIcon(textPrinter->printerTemplate.windowId, currChar, textPrinter->printerTemplate.currentX, textPrinter->printerTemplate.currentY);
-            textPrinter->printerTemplate.currentX += gGlyphInfo.width + textPrinter->printerTemplate.letterSpacing;
+            textPrinter->printerTemplate.currentX -= gGlyphInfo.width + textPrinter->printerTemplate.letterSpacing;
             return 0;
         case EOS:
             return 1;
@@ -799,25 +799,25 @@ u16 RenderText(struct TextPrinter *textPrinter)
             DecompressGlyphFont5(currChar, textPrinter->japanese);
         }
 
-        CopyGlyphToWindow(textPrinter);
-
         if (textPrinter->minLetterSpacing)
         {
-            textPrinter->printerTemplate.currentX += gGlyphInfo.width;
-            width = textPrinter->minLetterSpacing - gGlyphInfo.width;
+            textPrinter->printerTemplate.currentX -= gGlyphInfo.width;
+            width = textPrinter->minLetterSpacing + gGlyphInfo.width;
             if (width > 0)
             {
                 ClearTextSpan(textPrinter, width);
-                textPrinter->printerTemplate.currentX += width;
+                textPrinter->printerTemplate.currentX -= width;
             }
         }
         else
         {
             if (textPrinter->japanese)
-                textPrinter->printerTemplate.currentX += (gGlyphInfo.width + textPrinter->printerTemplate.letterSpacing);
+                textPrinter->printerTemplate.currentX -= (gGlyphInfo.width + textPrinter->printerTemplate.letterSpacing);
             else
-                textPrinter->printerTemplate.currentX += gGlyphInfo.width;
+                textPrinter->printerTemplate.currentX -= gGlyphInfo.width;
         }
+		CopyGlyphToWindow(textPrinter);
+		
         return 0;
     case 1:
         if (TextPrinterWait(textPrinter))

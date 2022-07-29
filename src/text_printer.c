@@ -85,6 +85,8 @@ bool16 AddTextPrinter(struct TextPrinterTemplate *textSubPrinter, u8 speed, void
     }
 
     sTempTextPrinter.printerTemplate = *textSubPrinter;
+	sTempTextPrinter.printerTemplate.currentX = gWindows[sTempTextPrinter.printerTemplate.windowId].window.width * 8;
+	sTempTextPrinter.printerTemplate.x = gWindows[sTempTextPrinter.printerTemplate.windowId].window.width * 8;
     sTempTextPrinter.callback = callback;
     sTempTextPrinter.minLetterSpacing = 0;
     sTempTextPrinter.japanese = 0;
