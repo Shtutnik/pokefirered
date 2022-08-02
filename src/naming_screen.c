@@ -107,6 +107,7 @@ struct NamingScreenData
     /*0x1E36*/ u16 monGender;
     /*0x1E38*/ u32 monPersonality;
     /*0x1E3C*/ MainCallback returnCallback;
+               u8 currentWindowId;
 };
 
 static EWRAM_DATA struct NamingScreenData * sNamingScreenData = NULL;
@@ -501,6 +502,7 @@ static void NamingScreen_InitBGs(void)
     for (i = 0; i < NELEMS(gUnknown_83E22A0) - 1; i++)
         sNamingScreenData->windows[i] = AddWindow(&gUnknown_83E22A0[i]);
 
+    sNamingScreenData->currentWindowId = 0;
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG2);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0xC, 0x8));
@@ -827,6 +829,10 @@ static bool8 PageSwapAnimState_1(struct Task *task)
 
         sNamingScreenData->bg1Priority = sNamingScreenData->bg2Priority;
         sNamingScreenData->bg2Priority = temp;
+        if (sNamingScreenData->currentWindowId == 0)
+            sNamingScreenData->currentWindowId = 1;
+        else
+            sNamingScreenData->currentWindowId = 0;
         task->tState++;
     }
     return 0;
@@ -1065,9 +1071,9 @@ static void CursorInit(void)
 static void SetCursorPos(s16 x, s16 y)
 {
     struct Sprite *cursorSprite = &gSprites[sNamingScreenData->cursorSpriteId];
-
+    u8 left = ((gWindows[sNamingScreenData->windows[sNamingScreenData->currentWindowId]].window.width + gWindows[sNamingScreenData->windows[sNamingScreenData->currentWindowId]].window.tilemapLeft)*8) - 14;
     if (x < gUnknown_83E2330[sub_809DE50()])
-        cursorSprite->x = gUnknown_83E2333[sub_809DE50()][x] + 38;
+        cursorSprite->x = left - gUnknown_83E2333[sub_809DE50()][x];
     else
         cursorSprite->x = 0;
 
@@ -1514,8 +1520,8 @@ static void HandleDpadMovement(struct Task *task)
          0,   //none
          0,   //up
          0,   //down
-        -1,   //left
-         1    //right
+         1,   //left
+        -1    //right
     };
 
     const s16 sDpadDeltaY[] = {
