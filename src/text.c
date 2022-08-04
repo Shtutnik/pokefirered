@@ -468,7 +468,7 @@ void TextPrinterDrawDownArrow(struct TextPrinter *textPrinter)
             FillWindowPixelRect(
                 textPrinter->printerTemplate.windowId,
                 textPrinter->printerTemplate.bgColor << 4 | textPrinter->printerTemplate.bgColor,
-                textPrinter->printerTemplate.currentX-10,
+                (gWindows[textPrinter->printerTemplate.windowId].window.width * 8) - textPrinter->printerTemplate.currentX,
                 textPrinter->printerTemplate.currentY,
                 10,
                 12);
@@ -508,7 +508,7 @@ void TextPrinterClearDownArrow(struct TextPrinter *textPrinter)
     FillWindowPixelRect(
         textPrinter->printerTemplate.windowId,
         textPrinter->printerTemplate.bgColor << 4 | textPrinter->printerTemplate.bgColor,
-        textPrinter->printerTemplate.currentX,
+        (gWindows[textPrinter->printerTemplate.windowId].window.width * 8) - textPrinter->printerTemplate.currentX,
         textPrinter->printerTemplate.currentY,
         10,
         12);
@@ -754,14 +754,15 @@ u16 RenderText(struct TextPrinter *textPrinter)
                 return 2;
             case EXT_CTRL_CODE_CLEAR_TO:
                 {
+
                     widthHelper = *textPrinter->printerTemplate.currentChar;
-                    widthHelper += textPrinter->printerTemplate.x;
+                    widthHelper = textPrinter->printerTemplate.x - widthHelper;
                     textPrinter->printerTemplate.currentChar++;
-                    width = widthHelper - textPrinter->printerTemplate.currentX;
-                    if (width > 0)
+                    //width = widthHelper - textPrinter->printerTemplate.currentX;
+                    if (widthHelper > 0)
                     {
-                        ClearTextSpan(textPrinter, width);
-                        textPrinter->printerTemplate.currentX -= width;
+                        //ClearTextSpan(textPrinter, width);
+                        textPrinter->printerTemplate.currentX = widthHelper;
                         return 0;
                     }
                 }

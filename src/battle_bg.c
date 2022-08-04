@@ -158,7 +158,7 @@ static const struct WindowTemplate gUnknown_8248330[] = {
         .baseBlock = 0x1c0
     }, {
         .bg = 0,
-        .tilemapLeft = 17,
+        .tilemapLeft = 16,
         .tilemapTop = 35,
         .width = 12,
         .height = 4,
