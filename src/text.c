@@ -468,7 +468,11 @@ void TextPrinterDrawDownArrow(struct TextPrinter *textPrinter)
             FillWindowPixelRect(
                 textPrinter->printerTemplate.windowId,
                 textPrinter->printerTemplate.bgColor << 4 | textPrinter->printerTemplate.bgColor,
+#if RTL
                 (gWindows[textPrinter->printerTemplate.windowId].window.width * 8) - textPrinter->printerTemplate.currentX,
+#else
+                textPrinter->printerTemplate.currentX,
+#endif
                 textPrinter->printerTemplate.currentY,
                 10,
                 12);
@@ -508,7 +512,11 @@ void TextPrinterClearDownArrow(struct TextPrinter *textPrinter)
     FillWindowPixelRect(
         textPrinter->printerTemplate.windowId,
         textPrinter->printerTemplate.bgColor << 4 | textPrinter->printerTemplate.bgColor,
+#if RTL        
         (gWindows[textPrinter->printerTemplate.windowId].window.width * 8) - textPrinter->printerTemplate.currentX,
+#else
+        textPrinter->printerTemplate.currentX,
+#endif
         textPrinter->printerTemplate.currentY,
         10,
         12);
@@ -744,7 +752,11 @@ u16 RenderText(struct TextPrinter *textPrinter)
                 if (width > 0)
                 {
                     ClearTextSpan(textPrinter, width);
+#if RTL
                     textPrinter->printerTemplate.currentX -= width;
+#else
+                    textPrinter->printerTemplate.currentX += width;
+#endif
                     return 0;
                 }
                 return 2;
@@ -754,7 +766,7 @@ u16 RenderText(struct TextPrinter *textPrinter)
                 return 2;
             case EXT_CTRL_CODE_CLEAR_TO:
                 {
-
+#if RTL
                     widthHelper = *textPrinter->printerTemplate.currentChar;
                     widthHelper = textPrinter->printerTemplate.x - widthHelper;
                     textPrinter->printerTemplate.currentChar++;
@@ -765,6 +777,18 @@ u16 RenderText(struct TextPrinter *textPrinter)
                         textPrinter->printerTemplate.currentX = widthHelper;
                         return 0;
                     }
+#else
+                    widthHelper = *textPrinter->printerTemplate.currentChar;
+                    widthHelper = textPrinter->printerTemplate.x;
+                    textPrinter->printerTemplate.currentChar++;
+                    width = widthHelper - textPrinter->printerTemplate.currentX;
+                    if (width > 0)
+                    {
+                        ClearTextSpan(textPrinter, width);
+                        textPrinter->printerTemplate.currentX += width;
+                        return 0;
+                    }
+#endif
                 }
                 return 2;
             case EXT_CTRL_CODE_MIN_LETTER_SPACING:
@@ -793,7 +817,11 @@ u16 RenderText(struct TextPrinter *textPrinter)
         case CHAR_KEYPAD_ICON:
             currChar = *textPrinter->printerTemplate.currentChar++;
             gGlyphInfo.width = DrawKeypadIcon(textPrinter->printerTemplate.windowId, currChar, textPrinter->printerTemplate.currentX, textPrinter->printerTemplate.currentY);
+#if RTL
             textPrinter->printerTemplate.currentX -= gGlyphInfo.width + textPrinter->printerTemplate.letterSpacing;
+#else
+            textPrinter->printerTemplate.currentX -= gGlyphInfo.width + textPrinter->printerTemplate.letterSpacing;
+#endif
             return 0;
         case EOS:
             return 1;
@@ -819,7 +847,8 @@ u16 RenderText(struct TextPrinter *textPrinter)
         case 5:
             DecompressGlyphFont5(currChar, textPrinter->japanese);
         }
-
+      
+#if RTL
         if (textPrinter->minLetterSpacing)
         {
             textPrinter->printerTemplate.currentX -= gGlyphInfo.width;
@@ -837,8 +866,27 @@ u16 RenderText(struct TextPrinter *textPrinter)
             else
                 textPrinter->printerTemplate.currentX -= gGlyphInfo.width;
         }
-		CopyGlyphToWindow(textPrinter);
-		
+        CopyGlyphToWindow(textPrinter);
+#else
+        CopyGlyphToWindow(textPrinter);
+        if (textPrinter->minLetterSpacing)
+        {
+            textPrinter->printerTemplate.currentX += gGlyphInfo.width;
+            width = textPrinter->minLetterSpacing - gGlyphInfo.width;
+            if (width > 0)
+            {
+                ClearTextSpan(textPrinter, width);
+                textPrinter->printerTemplate.currentX += width;
+            }
+        }
+        else
+        {
+            if (textPrinter->japanese)
+                textPrinter->printerTemplate.currentX += (gGlyphInfo.width + textPrinter->printerTemplate.letterSpacing);
+            else
+                textPrinter->printerTemplate.currentX += gGlyphInfo.width;
+        }
+#endif		
         return 0;
     case 1:
         if (TextPrinterWait(textPrinter))

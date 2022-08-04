@@ -322,8 +322,9 @@ void BlitBitmapRectToWindow(u8 windowId, const u8 *pixels, u16 srcX, u16 srcY, u
 {
     struct Bitmap sourceRect;
     struct Bitmap destRect;
-	
+#if RTL	
 	destX -= rectWidth;
+#endif
 
     sourceRect.pixels = (u8*)pixels;
     sourceRect.width = srcWidth;
@@ -359,8 +360,11 @@ void FillWindowPixelRect(u8 windowId, u8 fillValue, u16 x, u16 y, u16 width, u16
     pixelRect.pixels = gWindows[windowId].tileData;
     pixelRect.width = 8 * gWindows[windowId].window.width;
     pixelRect.height = 8 * gWindows[windowId].window.height;
-    
+#if RTL    
     FillBitmapRect4Bit(&pixelRect, pixelRect.width-x-width, y, width, height, fillValue);
+#else
+    FillBitmapRect4Bit(&pixelRect, x, y, width, height, fillValue);
+#endif
 }
 
 void CopyToWindowPixelBuffer(u8 windowId, const void *src, u16 size, u16 tileOffset)

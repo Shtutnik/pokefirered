@@ -1656,15 +1656,27 @@ static void CreatePikaOrGrassPlatformSpriteAndLinkToCurrentTask(u8 taskId, u8 st
         LoadCompressedSpriteSheet(&sOakSpeech_PikaSpriteSheets[1]);
         LoadCompressedSpriteSheet(&sOakSpeech_PikaSpriteSheets[2]);
         LoadSpritePalette(&sOakSpeech_PikaSpritePal);
+#if RTL
         spriteId = CreateSprite(&sOakSpeech_PikaSpriteTemplates[0], 240-0x10, 0x11, 2);
+#else
+        spriteId = CreateSprite(&sOakSpeech_PikaSpriteTemplates[0], 0x10, 0x11, 2);
+#endif
         gSprites[spriteId].oam.priority = 0;
         gTasks[taskId].data[7] = spriteId;
+#if RTL
         spriteId = CreateSprite(&sOakSpeech_PikaSpriteTemplates[1], 240-0x10, 0x09, 3);
+#else
+        spriteId = CreateSprite(&sOakSpeech_PikaSpriteTemplates[1], 0x10, 0x09, 3);
+#endif
         gSprites[spriteId].oam.priority = 0;
         gSprites[spriteId].data[0] = gTasks[taskId].data[7];
         gSprites[spriteId].callback = SpriteCB_PikaSync;
         gTasks[taskId].data[8] = spriteId;
+#if RTL
         spriteId = CreateSprite(&sOakSpeech_PikaSpriteTemplates[2], 240-8, 0x0D, 1);
+#else
+        spriteId = CreateSprite(&sOakSpeech_PikaSpriteTemplates[2], 0x18, 0x0D, 1);
+#endif
         gSprites[spriteId].oam.priority = 0;
         gSprites[spriteId].data[0] = gTasks[taskId].data[7];
         gSprites[spriteId].callback = SpriteCB_PikaSync;

@@ -30,6 +30,10 @@ else
 EXE :=
 endif
 
+override ASFLAGS += --defsym RTL=1
+override CPPFLAGS += -D RTL=1
+
+
 # use arm-none-eabi-cpp for macOS
 # as macOS's default compiler is clang
 # and clang's preprocessor will warn on \u

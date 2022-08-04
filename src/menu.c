@@ -186,16 +186,25 @@ u8 CreateTopBarWindowLoadPalette(u8 bg, u8 width, u8 yPos, u8 palette, u16 baseT
 
 void TopBarWindowPrintString(const u8 *string, u8 unused, bool8 copyToVram)
 {
+#if RTL
     s32 width, margin;
 
     margin = 4;
+#else
+    s32 width;
+#endif
 
     if (sTopBarWindowId != 0xFF)
     {
         PutWindowTilemap(sTopBarWindowId);
         FillWindowPixelBuffer(sTopBarWindowId, PIXEL_FILL(15));
+#if RTL
         width = GetStringWidth(1, string, 0);
         AddTextPrinterParameterized3(sTopBarWindowId, 1, (gWindows[sTopBarWindowId].window.width * 8) - width - margin, 1, gUnknown_8456618, 0, string);
+#else
+        width = GetStringWidth(0, string, 0);
+        AddTextPrinterParameterized3(sTopBarWindowId, 0, -20 - width, 1, gUnknown_8456618, 0, string);        
+#endif
         if (copyToVram)
             CopyWindowToVram(sTopBarWindowId, COPYWIN_BOTH);
     }
@@ -204,9 +213,13 @@ void TopBarWindowPrintString(const u8 *string, u8 unused, bool8 copyToVram)
 void TopBarWindowPrintTwoStrings(const u8 *string, const u8 *string2, bool8 fgColorChooser, u8 unused, bool8 copyToVram)
 {
     u8 color[3];
+#if RTL
     s32 fgColor, width, margin;
-
+    
     margin = 4;
+#else
+    s32 fgColor, width;
+#endif
 
     if ( sTopBarWindowId != 0xFF )
     {
@@ -227,10 +240,19 @@ void TopBarWindowPrintTwoStrings(const u8 *string, const u8 *string2, bool8 fgCo
         FillWindowPixelBuffer(sTopBarWindowId, PIXEL_FILL(15));
         if (string2)
         {
+#if RTL
             width = GetStringWidth(1, string2, 0);
             AddTextPrinterParameterized3(sTopBarWindowId, 1, (gWindows[sTopBarWindowId].window.width * 8) - width - margin, 1, color, 0, string2);
+#else
+            width = GetStringWidth(0, string2, 0);
+            AddTextPrinterParameterized3(sTopBarWindowId, 0, -20 - width, 1, color, 0, string2);
+#endif
         }
+#if RTL
         AddTextPrinterParameterized4(sTopBarWindowId, 1, margin, 1, 0, 0, color, 0, string);
+#else
+        AddTextPrinterParameterized4(sTopBarWindowId, 1, 4, 1, 0, 0, color, 0, string);
+#endif
         if (copyToVram)
             CopyWindowToVram(sTopBarWindowId, COPYWIN_BOTH);
     }
