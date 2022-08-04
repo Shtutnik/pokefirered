@@ -37,3 +37,8 @@ Other disassembly and/or decompilation projects:
 ## Contacts
 
 You can find us on [Discord](https://discord.gg/d5dubZ3) and [IRC](https://web.libera.chat/?#pret).
+
+## Credits
+
+Hebrew Fonts are based on the work of Nog-Frog (https://github.com/Nog-Frog/pokered) - Thanks!!
+
