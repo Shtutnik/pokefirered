@@ -456,7 +456,7 @@ static void NamingScreen_Init(void)
     sNamingScreenData->bgToHide = 1;
     sNamingScreenData->template = sNamingScreenTemplates[sNamingScreenData->templateNum];
     sNamingScreenData->currentPage = sNamingScreenData->template->initialPage;
-    sNamingScreenData->inputCharBaseXPos = (240 - sNamingScreenData->template->maxChars * 8) / 2 + 6;
+    sNamingScreenData->inputCharBaseXPos = 176;//(240 - sNamingScreenData->template->maxChars * 8) / 2 + 6;
     sNamingScreenData->keyRepeatStartDelayCopy = gKeyRepeatStartDelay;
     memset(sNamingScreenData->textBuffer, 0xFF, sizeof(sNamingScreenData->textBuffer));
     if (sNamingScreenData->template->copyExistingString != 0)
@@ -1264,14 +1264,14 @@ static void CreateUnderscoreSprites(void)
     s16 xPos;
     u8 i;
 
-    xPos = sNamingScreenData->inputCharBaseXPos - 5;
+    xPos = sNamingScreenData->inputCharBaseXPos + 5;
     spriteId = CreateSprite(&sSpriteTemplate_InputArrow, xPos, 0x38, 0);
     gSprites[spriteId].oam.priority = 3;
     gSprites[spriteId].invisible = TRUE;
     xPos = sNamingScreenData->inputCharBaseXPos;
-    for (i = 0; i < sNamingScreenData->template->maxChars; i++, xPos += 8)
+    for (i = 0; i < sNamingScreenData->template->maxChars; i++, xPos -= 8)
     {
-        spriteId = CreateSprite(&sSpriteTemplate_Underscore, xPos + 3, 0x3C, 0);
+        spriteId = CreateSprite(&sSpriteTemplate_Underscore, xPos - 3, 0x3C, 0);
         gSprites[spriteId].oam.priority = 3;
         gSprites[spriteId].data[0] = i;
         gSprites[spriteId].invisible = TRUE;
@@ -1795,7 +1795,7 @@ static void PrintBufferCharactersOnScreen(void)
     u8 temp[2];
     u16 xoff;
     u8 maxChars = sNamingScreenData->template->maxChars;
-    u16 xpos = sNamingScreenData->inputCharBaseXPos - 0x40;
+    u16 xpos = 0; //     u16 xpos = sNamingScreenData->inputCharBaseXPos - 0x40;
 
     FillWindowPixelBuffer(sNamingScreenData->windows[2], PIXEL_FILL(1));
 
