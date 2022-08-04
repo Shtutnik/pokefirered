@@ -355,12 +355,12 @@ void BlitBitmapRectToWindowWithColorKey(u8 windowId, const u8 *pixels, u16 srcX,
 void FillWindowPixelRect(u8 windowId, u8 fillValue, u16 x, u16 y, u16 width, u16 height)
 {
     struct Bitmap pixelRect;
-
+    
     pixelRect.pixels = gWindows[windowId].tileData;
     pixelRect.width = 8 * gWindows[windowId].window.width;
     pixelRect.height = 8 * gWindows[windowId].window.height;
-
-    FillBitmapRect4Bit(&pixelRect, x, y, width, height, fillValue);
+    
+    FillBitmapRect4Bit(&pixelRect, pixelRect.width-x-width, y, width, height, fillValue);
 }
 
 void CopyToWindowPixelBuffer(u8 windowId, const void *src, u16 size, u16 tileOffset)

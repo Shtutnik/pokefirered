@@ -521,7 +521,7 @@ void HandleInputChooseMove(void)
     }
     else if (JOY_NEW(DPAD_RIGHT))
     {
-        if (!(gMoveSelectionCursor[gActiveBattler] & 1)
+        if ((gMoveSelectionCursor[gActiveBattler] & 1)
          && (gMoveSelectionCursor[gActiveBattler] ^ 1) < gNumberOfMovesToChoose)
         {
             MoveSelectionDestroyCursorAt(gMoveSelectionCursor[gActiveBattler]);
@@ -1437,7 +1437,7 @@ void ActionSelectionCreateCursorAt(u8 cursorPosition, u8 arg1)
 
     src[0] = 1;
     src[1] = 2;
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 16, 35 + (cursorPosition & 2), 1, 2, 0x11);
+    CopyToBgTilemapBufferRect_ChangePalette(0, src, (gWindows[2].window.width + gWindows[2].window.tilemapLeft) - 7 * (cursorPosition & 1), 35 + (cursorPosition & 2), 1, 2, 0x11);
     CopyBgTilemapBufferToVram(0);
 }
 
@@ -1447,7 +1447,7 @@ void ActionSelectionDestroyCursorAt(u8 cursorPosition)
 
     src[0] = 32;
     src[1] = 32;
-    CopyToBgTilemapBufferRect_ChangePalette(0, src, 7 * (cursorPosition & 1) + 16, 35 + (cursorPosition & 2), 1, 2, 0x11);
+    CopyToBgTilemapBufferRect_ChangePalette(0, src, (gWindows[2].window.width + gWindows[2].window.tilemapLeft) - 7 * (cursorPosition & 1), 35 + (cursorPosition & 2), 1, 2, 0x11);
     CopyBgTilemapBufferToVram(0);
 }
 
