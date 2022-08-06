@@ -30,9 +30,6 @@ else
 EXE :=
 endif
 
-override ASFLAGS += --defsym RTL=1
-override CPPFLAGS += -D RTL=1
-
 
 # use arm-none-eabi-cpp for macOS
 # as macOS's default compiler is clang
@@ -118,6 +115,9 @@ MAPJSON := tools/mapjson/mapjson
 JSONPROC := tools/jsonproc/jsonproc
 
 PERL := perl
+
+override ASFLAGS += --defsym RTL=1
+override CPPFLAGS += -D RTL=1
 
 # Clear the default suffixes
 .SUFFIXES:
