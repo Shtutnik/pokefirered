@@ -244,7 +244,11 @@ static void HandleInputChooseAction(void)
     }
     else if (JOY_NEW(DPAD_LEFT))
     {
-        if (gActionSelectionCursor[gActiveBattler] & 1) // if is B_ACTION_USE_ITEM or B_ACTION_RUN
+#if RTL
+        if (!(gActionSelectionCursor[gActiveBattler] & 1)) // if is B_ACTION_USE_ITEM or B_ACTION_RUN
+#else
+        if ((gActionSelectionCursor[gActiveBattler] & 1)) // if is B_ACTION_USE_ITEM or B_ACTION_RUN
+#endif
         {
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
@@ -254,7 +258,11 @@ static void HandleInputChooseAction(void)
     }
     else if (JOY_NEW(DPAD_RIGHT))
     {
+#if RTL
+        if ((gActionSelectionCursor[gActiveBattler] & 1)) // if is B_ACTION_USE_MOVE or B_ACTION_SWITCH
+#else 
         if (!(gActionSelectionCursor[gActiveBattler] & 1)) // if is B_ACTION_USE_MOVE or B_ACTION_SWITCH
+#endif
         {
             PlaySE(SE_SELECT);
             ActionSelectionDestroyCursorAt(gActionSelectionCursor[gActiveBattler]);
