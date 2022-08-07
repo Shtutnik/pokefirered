@@ -108,7 +108,9 @@ struct NamingScreenData
     /*0x1E36*/ u16 monGender;
     /*0x1E38*/ u32 monPersonality;
     /*0x1E3C*/ MainCallback returnCallback;
+#if RTL
                u8 currentWindowId;
+#endif 
 };
 
 static EWRAM_DATA struct NamingScreenData * sNamingScreenData = NULL;
@@ -474,7 +476,11 @@ static void NamingScreen_Init(void)
     sNamingScreenData->bgToHide = 1;
     sNamingScreenData->template = sNamingScreenTemplates[sNamingScreenData->templateNum];
     sNamingScreenData->currentPage = sNamingScreenData->template->initialPage;
-    sNamingScreenData->inputCharBaseXPos = 176;//(240 - sNamingScreenData->template->maxChars * 8) / 2 + 6;
+#if RTL
+    sNamingScreenData->inputCharBaseXPos = 176;
+#else
+    sNamingScreenData->inputCharBaseXPos = (240 - sNamingScreenData->template->maxChars * 8) / 2 + 6;
+#endif
     sNamingScreenData->keyRepeatStartDelayCopy = gKeyRepeatStartDelay;
     memset(sNamingScreenData->textBuffer, 0xFF, sizeof(sNamingScreenData->textBuffer));
     if (sNamingScreenData->template->copyExistingString != 0)
@@ -519,8 +525,9 @@ static void NamingScreen_InitBGs(void)
 
     for (i = 0; i < NELEMS(gUnknown_83E22A0) - 1; i++)
         sNamingScreenData->windows[i] = AddWindow(&gUnknown_83E22A0[i]);
-
+#if RTL
     sNamingScreenData->currentWindowId = 0;
+#endif
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_1D_MAP | DISPCNT_OBJ_ON);
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_BG1 | BLDCNT_TGT2_BG2);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(0xC, 0x8));
@@ -850,10 +857,12 @@ static bool8 PageSwapAnimState_1(struct Task *task)
 
         sNamingScreenData->bg1Priority = sNamingScreenData->bg2Priority;
         sNamingScreenData->bg2Priority = temp;
+#if RTL
         if (sNamingScreenData->currentWindowId == 0)
             sNamingScreenData->currentWindowId = 1;
         else
             sNamingScreenData->currentWindowId = 0;
+#endif
         task->tState++;
     }
     return 0;
@@ -1092,9 +1101,15 @@ static void CursorInit(void)
 static void SetCursorPos(s16 x, s16 y)
 {
     struct Sprite *cursorSprite = &gSprites[sNamingScreenData->cursorSpriteId];
+#if RTL
     u8 left = ((gWindows[sNamingScreenData->windows[sNamingScreenData->currentWindowId]].window.width + gWindows[sNamingScreenData->windows[sNamingScreenData->currentWindowId]].window.tilemapLeft)*8) - 14;
+#endif
     if (x < gUnknown_83E2330[sub_809DE50()])
+#if RTL
         cursorSprite->x = left - gUnknown_83E2333[sub_809DE50()][x];
+#else
+        cursorSprite->x = gUnknown_83E2333[sub_809DE50()][x] + 38;
+#endif
     else
         cursorSprite->x = 0;
 
@@ -1290,9 +1305,15 @@ static void CreateUnderscoreSprites(void)
     gSprites[spriteId].oam.priority = 3;
     gSprites[spriteId].invisible = TRUE;
     xPos = sNamingScreenData->inputCharBaseXPos;
+#if RTL
     for (i = 0; i < sNamingScreenData->template->maxChars; i++, xPos -= 8)
     {
         spriteId = CreateSprite(&sSpriteTemplate_Underscore, xPos - 3, 0x3C, 0);
+#else
+    for (i = 0; i < sNamingScreenData->template->maxChars; i++, xPos += 8)
+    {
+        spriteId = CreateSprite(&sSpriteTemplate_Underscore, xPos + 3, 0x3C, 0);
+#endif
         gSprites[spriteId].oam.priority = 3;
         gSprites[spriteId].data[0] = i;
         gSprites[spriteId].invisible = TRUE;
@@ -1541,8 +1562,13 @@ static void HandleDpadMovement(struct Task *task)
          0,   //none
          0,   //up
          0,   //down
+#if RTL
          1,   //left
         -1    //right
+#else
+        -1,   //left
+         1    //right
+#endif
     };
 
     const s16 sDpadDeltaY[] = {
@@ -1816,7 +1842,11 @@ static void PrintBufferCharactersOnScreen(void)
     u8 temp[2];
     u16 xoff;
     u8 maxChars = sNamingScreenData->template->maxChars;
-    u16 xpos = 0; //     u16 xpos = sNamingScreenData->inputCharBaseXPos - 0x40;
+#if RTL
+    u16 xpos = 0;
+#else
+    u16 xpos = sNamingScreenData->inputCharBaseXPos - 0x40;
+#endif
 
     FillWindowPixelBuffer(sNamingScreenData->windows[2], PIXEL_FILL(1));
 
