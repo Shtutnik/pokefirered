@@ -70,6 +70,15 @@ bool16 AddTextPrinter(struct TextPrinterTemplate *textSubPrinter, u8 speed, void
     int i;
     u16 j;
 
+#if RTL
+    int x;
+    int inDigit;
+    int di;
+    u8 digits[20];
+    u8 *strptr;
+    u8 *digitsPtr;
+#endif
+
     if (!gFonts)
         return FALSE;
 
@@ -86,6 +95,37 @@ bool16 AddTextPrinter(struct TextPrinterTemplate *textSubPrinter, u8 speed, void
 
     sTempTextPrinter.printerTemplate = *textSubPrinter;
 #if RTL    
+    inDigit = 0;
+    strptr=(u8 *)(sTempTextPrinter.printerTemplate.currentChar);
+    for (i = 0; strptr[i] != EOS; i++)
+    {
+        MgbaPrintf(MGBA_LOG_INFO, "i %d",i);
+        if (inDigit == 0) {
+            if (strptr[i] >= CHAR_0 && strptr[i] <= CHAR_9) {
+                inDigit = 1;
+                digitsPtr = digits;
+                *digitsPtr++ = strptr[i];
+                di = i;
+                continue;
+            }
+        } else {
+            if (strptr[i] >= CHAR_0 && strptr[i] <= CHAR_9) {
+                *digitsPtr++ = strptr[i];
+                continue;
+            } else {
+                inDigit = 0;
+                for (x = di; x < i; x++){
+                    strptr[x] = digits[i - x - 1];
+                }
+                continue;
+            }
+        }
+    }
+    if (inDigit == 1) {
+        for (x = di; x < i; x++){
+            strptr[x] = digits[i - x - 1];
+        }
+    }
 	sTempTextPrinter.printerTemplate.currentX = (gWindows[sTempTextPrinter.printerTemplate.windowId].window.width * 8) - sTempTextPrinter.printerTemplate.currentX;
 	sTempTextPrinter.printerTemplate.x = (gWindows[sTempTextPrinter.printerTemplate.windowId].window.width * 8) - sTempTextPrinter.printerTemplate.x;
 #endif
