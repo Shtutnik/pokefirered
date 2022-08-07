@@ -745,17 +745,32 @@ static void UpdateLvlInHealthbox(u8 healthboxSpriteId, u8 lvl)
     if (GetBattlerSide(gSprites[healthboxSpriteId].hMain_Battler) == B_SIDE_PLAYER)
     {
         objVram = (void*)(OBJ_VRAM0);
+#if RTL
+        if (!IsDoubleBattle())
+            objVram += spriteTileNum + 0x40;
+        else
+            objVram += spriteTileNum + 0x40;
+#else
         if (!IsDoubleBattle())
             objVram += spriteTileNum + 0x820;
         else
             objVram += spriteTileNum + 0x420;
+#endif
     }
     else
     {
         objVram = (void*)(OBJ_VRAM0);
+#if RTL
+        objVram += spriteTileNum + 0x20;
+#else
         objVram += spriteTileNum + 0x400;
+#endif
     }
+#if RTL
+    TextIntoHealthboxObject(objVram, windowTileData+0xA0, 3);
+#else
     TextIntoHealthboxObject(objVram, windowTileData, 3);
+#endif
     RemoveWindowOnHealthbox(windowId);
 }
 
@@ -774,18 +789,32 @@ void UpdateHpTextInHealthbox(u8 healthboxSpriteId, s16 value, u8 maxOrCurrent)
             ConvertIntToDecimalStringN(text, value, STR_CONV_MODE_RIGHT_ALIGN, 3);
             windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(text, 0, 5, &windowId);
             spriteTileNum = gSprites[healthboxSpriteId].oam.tileNum;
+#if RTL
+            TextIntoHealthboxObject( (void*)(OBJ_VRAM0) + spriteTileNum * TILE_SIZE_4BPP + 0xA40, windowTileData+0xC0, 2);
+#else
             TextIntoHealthboxObject( (void*)(OBJ_VRAM0) + spriteTileNum * TILE_SIZE_4BPP + 0xA40, windowTileData, 2);
+#endif
             RemoveWindowOnHealthbox(windowId);
         }
         else // singles, current
         {
+#if RTL
+            text[0] = CHAR_SLASH;
+            strptr = ConvertIntToDecimalStringN(text+1, value, STR_CONV_MODE_RIGHT_ALIGN, 3);
+#else
             strptr = ConvertIntToDecimalStringN(text, value, STR_CONV_MODE_RIGHT_ALIGN, 3);
             *strptr++ = CHAR_SLASH;
+#endif
             *strptr++ = EOS;
             windowTileData = AddTextPrinterAndCreateWindowOnHealthbox(text, 4, 5, &windowId);
             spriteTileNum = gSprites[healthboxSpriteId].oam.tileNum;
+#if RTL
+            TextIntoHealthboxObject((void *)(OBJ_VRAM0) + spriteTileNum * TILE_SIZE_4BPP + 0x2E0, windowTileData+0xA0, 1);
+            TextIntoHealthboxObject((void *)(OBJ_VRAM0) + spriteTileNum * TILE_SIZE_4BPP + 0xA00, windowTileData + 0xC0, 2);
+#else
             TextIntoHealthboxObject((void *)(OBJ_VRAM0) + spriteTileNum * TILE_SIZE_4BPP + 0x2E0, windowTileData, 1);
             TextIntoHealthboxObject((void *)(OBJ_VRAM0) + spriteTileNum * TILE_SIZE_4BPP + 0xA00, windowTileData + 0x20, 2);
+#endif
             RemoveWindowOnHealthbox(windowId);
         }
     }
@@ -1507,17 +1536,30 @@ void UpdateNickInHealthbox(u8 healthboxSpriteId, struct Pokemon *mon)
 
     if (GetBattlerSide(gSprites[healthboxSpriteId].data[6]) == B_SIDE_PLAYER)
     {
+#if RTL        
+        TextIntoHealthboxObject((void*)(OBJ_VRAM0 + 0xA0 + spriteTileNum), windowTileData+0x20, 3);
+#else
         TextIntoHealthboxObject((void*)(OBJ_VRAM0 + 0x40 + spriteTileNum), windowTileData, 6);
+#endif
         ptr = (void*)(OBJ_VRAM0);
         if (!IsDoubleBattle())
             ptr += spriteTileNum + 0x800;
         else
             ptr += spriteTileNum + 0x400;
+#if RTL
+        TextIntoHealthboxObject(ptr, windowTileData + 0x80, 4);
+#else
         TextIntoHealthboxObject(ptr, windowTileData + 0xC0, 1);
+#endif
     }
     else
     {
+#if RTL
+        TextIntoHealthboxObject((void*)(OBJ_VRAM0 + 0x80 + spriteTileNum), windowTileData+0x20, 4);
+        TextIntoHealthboxObject((void*)(OBJ_VRAM0 + 0x400 + spriteTileNum), windowTileData+0xA0, 3);
+#else
         TextIntoHealthboxObject((void*)(OBJ_VRAM0 + 0x20 + spriteTileNum), windowTileData, 7);
+#endif
     }
 
     RemoveWindowOnHealthbox(windowId);
